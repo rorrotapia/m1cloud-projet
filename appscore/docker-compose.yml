@@ -1,7 +1,18 @@
 version: '3'
 
 services:
+  user.data:
+    image: redis
+    ports:
+      - 6379:6379
 
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - 15672:15672
+      - 5672:5672
+    container_name: rabbitmq
+    
   webmvc:
     image: web 
     build:
@@ -14,6 +25,7 @@ services:
       - applicants.api
       - identity.api
       - jobs.api
+    restart: always
 
   applicants.api:
     image: applicants.api
@@ -29,6 +41,7 @@ services:
     depends_on:
       - sql.data
       - rabbitmq
+    restart: always
 
   jobs.api:
     image: jobs.api
@@ -44,6 +57,7 @@ services:
     depends_on:
       - sql.data
       - rabbitmq
+    restart: always
 
   identity.api:
     image: identity.api
@@ -68,19 +82,3 @@ services:
     ports:
       - 1433:1433
     container_name: mssql-linux
-
-  user.data:
-    image: redis
-    ports:
-      - 6379:6379
-
-  rabbitmq:
-    image: rabbitmq:3-management
-    ports:
-      - 15672:15672
-      - 5672:5672
-    container_name: rabbitmq
-  
-
-   
- 
