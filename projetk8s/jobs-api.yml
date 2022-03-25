@@ -2,13 +2,13 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: applicants-service
+  name: jobs-service
   namespace: projet-cloud
 spec:
   selector:
-    app: applicants-pod
+    app: jobs-pod
   ports:
-    - port: 8081
+    - port: 8083
       targetPort: 80
   type: ClusterIP
 ---
@@ -16,27 +16,27 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: applicants-deployment
+  name: jobs-deployment
   namespace: projet-cloud
   labels:
-    app: applicants-api
+    app: jobs-api
 spec:
   selector:
     matchLabels:
-      app: applicants-api-pod
+      app: jobs-api-pod
   template:
     metadata:
       labels:
-        app: applicants-api-pod
+        app: jobs-api-pod
     spec:
       containers:
-      - name: applicants-api
-        image: fofanad97/projet-applicants-api:v1
+      - name: jobs-api
+        image: fofanad97/projet-jobs-api:v1
         ports:
           - containerPort: 80
         env: 
         - name: ConnectionString
-          value: Server=sql.data;User=sa;Password=Pass@word;Database=dotnetgigs.applicants;
+          value: Server=sql.data;User=sa;Password=Pass@word;Database=dotnetgigs.jobs;
         - name: HostRabbitmq
           value: rabbitmq
         resources:

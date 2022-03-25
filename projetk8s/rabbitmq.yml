@@ -2,43 +2,41 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: applicants-service
+  name: rabbitmq-service
   namespace: projet-cloud
 spec:
   selector:
-    app: applicants-pod
+    app: rabbitmq-pod
   ports:
-    - port: 8081
-      targetPort: 80
+    - port: 15672
+      targetPort: 15672
+    - port: 5672
+      targetPort: 5672
   type: ClusterIP
 ---
 #deployment
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: applicants-deployment
+  name: rabbitmq-deployment
   namespace: projet-cloud
   labels:
-    app: applicants-api
+    app: rabbitmq
 spec:
   selector:
     matchLabels:
-      app: applicants-api-pod
+      app: rabbitmq-pod
   template:
     metadata:
       labels:
-        app: applicants-api-pod
+        app: rabbitmq-pod
     spec:
       containers:
-      - name: applicants-api
-        image: fofanad97/projet-applicants-api:v1
+      - name: rabbitmq
+        image: rabbitmq:3-management
         ports:
-          - containerPort: 80
-        env: 
-        - name: ConnectionString
-          value: Server=sql.data;User=sa;Password=Pass@word;Database=dotnetgigs.applicants;
-        - name: HostRabbitmq
-          value: rabbitmq
+          - containerPort: 15672
+          - containerPort: 5672
         resources:
           requests:
             memory: 500Mi
