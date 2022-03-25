@@ -1,0 +1,49 @@
+#service
+apiVersion: v1
+kind: Service
+metadata:
+  name: applicants-service
+  namespace: projet-cloud
+spec:
+  selector:
+    app: applicants-pod
+  ports:
+    - port: 8081
+      targetPort: 80
+  type: ClusterIP
+---
+#deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: applicants-deployment
+  namespace: projet-cloud
+  labels:
+    app: applicants-api
+spec:
+  selector:
+    matchLabels:
+      app: applicants-api-pod
+  template:
+    metadata:
+      labels:
+        app: applicants-api-pod
+    spec:
+      containers:
+      - name: applicants-api
+        image: fofanad97/projet-applicants-api
+        ports:
+          - containerPort: 80
+        env: 
+        - name: ConnectionString
+          value: Server=sql.data;User=sa;Password=Pass@word;Database=dotnetgigs.applicants;
+        - name: HostRabbitmq
+          value: rabbitmq
+        resources:
+          requests:
+            memory: 500Mi
+            cpu: 3m
+          limits:
+            memory: 1500Mi
+            cpu: 6m
+      restartPolicy: Always

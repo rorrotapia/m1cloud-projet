@@ -1,0 +1,75 @@
+#service mssql
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql-service
+  namespace: press
+spec:
+  selector:
+    app: mysql-pod
+  ports:
+    - port: 3306
+      targetPort: 3306
+  type: ClusterIP
+---
+#volume
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mysql-volume-claim
+  namespace: press
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2Gi
+---
+#deployment mssql
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql-deployment
+  namespace: press
+  labels:
+    app: mysql
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mysql-pod
+  template:
+    metadata:
+      labels:
+        app: mysql-pod
+    spec:
+      containers:
+      - image: mysql:5.7
+        name: mysql-cont
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: bob
+        - name: MYSQL_DATABASE
+          value: wordpress
+        - name: MYSQL_USER
+          value: wpuser
+        - name: MYSQL_PASSWORD
+          value: wppassword
+        ports:
+        - containerPort: 3306
+          name: mysql-port
+        volumeMounts:
+        - name: mysql-volume
+          mountPath: /var/lib/mysql
+        resources:
+            requests:
+              memory: 300Mi
+              cpu: 250m
+            limits:
+              memory: 500Mi
+              cpu: 500m
+      volumes:
+      - name: mysql-volume
+        persistentVolumeClaim:
+          claimName: mysql-volume-claim
+      restartPolicy: Always
