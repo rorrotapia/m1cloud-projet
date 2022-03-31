@@ -46,14 +46,18 @@ Ressources par app:
 - applicants.api => CPU 0.5, MEM 500Mi
 - identity.api => CPU 0.5, MEM 500Mi
 - jobs.api => CPU 0.5, MEM 500Mi
+- sql.data => CPU 170m, MEM 1500Mi
+- rabbitmq => CPU 4m, MEM 500Mi
 - user.data => CPU 4m, MEM 500Mi
-
 
 Ressources limittes par app:
 - web => CPU 1, MEM 2000Mi
 - applicants.api => CPU 1, MEM 1500Mi
 - identity.api => CPU 1, MEM 1500Mi
 - jobs.api => CPU 1, MEM 1500Mi
+- sql.data => CPU 250m, MEM 2500Mi
+- rabbitmq => CPU 8m, MEM 1500Mi
+- user.data => CPU 8m, MEM 1500Mi
 
 Affinité:
 - Web => jobs.api et applicants.api

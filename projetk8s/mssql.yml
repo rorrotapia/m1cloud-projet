@@ -54,11 +54,11 @@ spec:
           mountPath: /var/opt/mssql
         resources:
             requests:
-              memory: 300Mi
-              cpu: 250m
+              memory: 1500Mi
+              cpu: 170m
             limits:
-              memory: 500Mi
-              cpu: 500m
+              memory: 2500Mi
+              cpu: 250m
       volumes:
       - name: mssql-storage
         persistentVolumeClaim:
