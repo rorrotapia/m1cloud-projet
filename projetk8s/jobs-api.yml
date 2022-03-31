@@ -36,9 +36,9 @@ spec:
           - containerPort: 80
         env: 
         - name: ConnectionString
-          value: Server=sql.data;User=sa;Password=Pass@word;Database=dotnetgigs.jobs;
+          value: Server=mssql-service;User=sa;Password=Pass@word;Database=dotnetgigs.jobs;
         - name: HostRabbitmq
-          value: rabbitmq
+          value: rabbitmq-service
         resources:
           requests:
             memory: 500Mi

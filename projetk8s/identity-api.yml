@@ -36,9 +36,9 @@ spec:
           - containerPort: 80
         env: 
         - name: RedisHost
-          value: user.data:6379
+          value: redis-service:6379
         - name: HostRabbitmq
-          value: rabbitmq
+          value: rabbitmq-service
         resources:
           requests:
             memory: 500Mi
