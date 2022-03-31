@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: jobs-service
+  name: jobs-api-service
   namespace: projet-cloud
 spec:
   selector:
