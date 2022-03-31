@@ -39,11 +39,4 @@ spec:
         ports:
           - containerPort: 15672
           - containerPort: 5672
-        resources:
-          requests:
-            memory: 500Mi
-            cpu: 4m
-          limits:
-            memory: 1500Mi
-            cpu: 8m
       restartPolicy: Always

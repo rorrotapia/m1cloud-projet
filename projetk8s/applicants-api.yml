@@ -6,9 +6,9 @@ metadata:
   namespace: projet-cloud
 spec:
   selector:
-    app: applicants-pod
+    app: applicants-api-pod
   ports:
-    - port: 8081
+    - port: 80
       targetPort: 80
   type: ClusterIP
 ---
@@ -42,8 +42,8 @@ spec:
         resources:
           requests:
             memory: 500Mi
-            cpu: 0.5m
+            cpu: 0.5
           limits:
             memory: 1500Mi
-            cpu: 1m
+            cpu: 1
       restartPolicy: Always

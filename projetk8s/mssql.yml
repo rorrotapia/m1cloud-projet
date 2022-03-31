@@ -44,7 +44,7 @@ spec:
         app: mssql-pod
     spec:
       containers:
-      - image: fofanad97/projet-database:v1
+      - image: bart120/yv-database:1
         name: mssql
         ports:
         - containerPort: 1433
@@ -52,13 +52,6 @@ spec:
         volumeMounts:
         - name: mssql-volume
           mountPath: /var/opt/mssql
-        resources:
-            requests:
-              memory: 1500Mi
-              cpu: 170m
-            limits:
-              memory: 2500Mi
-              cpu: 250m
       volumes:
       - name: mssql-volume
         persistentVolumeClaim:
