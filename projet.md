@@ -43,21 +43,17 @@ Les pods devront également redémarrer automatiquement si ils tombent.
 Il vous faudra définir des "règles d'affinité" entre vos éléments afin d'en améliorer les performances dans les échanges.
 Ressources par app:
 - web => CPU 4m, MEM 900Mi
-- applicants.api => CPU 3m, MEM 500Mi
-- identity.api => CPU 3m, MEM 500Mi
-- jobs.api => CPU 3m, MEM 500Mi
-- sql.data => CPU 170m, MEM 1500Mi
-- rabbitmq => CPU 4m, MEM 500Mi
+- applicants.api => CPU 0.5, MEM 500Mi
+- identity.api => CPU 0.5, MEM 500Mi
+- jobs.api => CPU 0.5, MEM 500Mi
 - user.data => CPU 4m, MEM 500Mi
 
+
 Ressources limittes par app:
-- web => CPU 6m, MEM 2000Mi
-- applicants.api => CPU 6m, MEM 1500Mi
-- identity.api => CPU 6m, MEM 1500Mi
-- jobs.api => CPU 6m, MEM 1500Mi
-- sql.data => CPU 250m, MEM 2500Mi
-- rabbitmq => CPU 8m, MEM 1500Mi
-- user.data => CPU 8m, MEM 1500Mi
+- web => CPU 1, MEM 2000Mi
+- applicants.api => CPU 1, MEM 1500Mi
+- identity.api => CPU 1, MEM 1500Mi
+- jobs.api => CPU 1, MEM 1500Mi
 
 Affinité:
 - Web => jobs.api et applicants.api
