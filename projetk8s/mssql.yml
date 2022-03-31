@@ -16,7 +16,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: mssql-volume
+  name: mssql-volume-claim
   namespace: projet-cloud
 spec:
   accessModes:
@@ -60,7 +60,7 @@ spec:
               memory: 2500Mi
               cpu: 250m
       volumes:
-      - name: mssql-storage
+      - name: mssql-volume
         persistentVolumeClaim:
-          claimName: mssql-volume
+          claimName: mssql-volume-claim
       restartPolicy: Always
