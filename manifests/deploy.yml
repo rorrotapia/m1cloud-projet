@@ -359,6 +359,102 @@ spec:
       restartPolicy: Always
 ---
 
+
+#ElasticSearch
+
+#service
+apiVersion: v1
+kind: Service
+metadata:
+  name: elasticsearch
+  namespace: projet-cloud
+spec:
+  selector:
+    app: elasticsearch
+  ports:
+  - name: elasticsearch
+    port: 9200
+    targetPort: 9200
+  type: ClusterIP
+---
+#deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: elasticsearch-deployment
+  namespace: projet-cloud
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: elasticsearch
+  template:
+    metadata:
+      labels:
+        app: elasticsearch
+    spec:
+      containers:
+      - image: elasticsearch:7.14.2
+        name: elasticsearch
+        env:
+        - name: ES_JAVA_OPTS
+          value: -Xms512m -Xmx512m
+        - name: discovery.type
+          value: single-node
+      initContainers:
+      - name: increase-vm-max-map
+        image: busybox
+        ports:
+        - containerPort: 9200
+        command: ["sysctl", "-w", "vm.max_map_count=262144"]
+        securityContext:
+          privileged: true
+---
+
+#Kibana
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: kibana-service
+  namespace: projet-cloud
+spec:
+  selector:
+    app: kibana
+  ports:
+  - port: 80
+    targetPort: 5601
+  type: ClusterIP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kibana-deployment
+  namespace: projet-cloud
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kibana
+  template:
+    metadata:
+      labels:
+        app: kibana
+    spec:
+      containers:
+      - image: kibana:7.14.2
+        name: kibana
+        ports:
+        - containerPort: 5601
+        env:
+          - name: ELASTICSEARCH_HOSTS
+            value: http://elasticsearch:9200
+          - name: ELASTICSEARCH_URL
+            value: http://elasticsearch:9200
+          - name: SERVER_BASEPATH
+            value: "/admin"
+
+---
 #ingress.yml
 
 apiVersion: networking.k8s.io/v1
