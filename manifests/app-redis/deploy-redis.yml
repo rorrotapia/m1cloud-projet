@@ -1,18 +1,3 @@
-#service
-apiVersion: v1
-kind: Service
-metadata:
-  name: redis-service
-  namespace: projet-cloud
-spec:
-  selector:
-    app: redis-pod
-  ports:
-    - port: 6379
-      targetPort: 6379
-  type: ClusterIP
----
-#deployment
 apiVersion: apps/v1
 kind: Deployment
 metadata:

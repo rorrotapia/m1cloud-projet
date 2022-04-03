@@ -1,31 +1,3 @@
-#service mssql
-apiVersion: v1
-kind: Service
-metadata:
-  name: mssql-service
-  namespace: projet-cloud
-spec:
-  selector:
-    app: mssql-pod
-  ports:
-    - port: 1433
-      targetPort: 1433
-  type: ClusterIP
----
-#volume
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: mssql-volume-claim
-  namespace: projet-cloud
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 2Gi
----
-#deployment mssql
 apiVersion: apps/v1
 kind: Deployment
 metadata:

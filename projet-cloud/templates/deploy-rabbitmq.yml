@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rabbitmq-deployment
+  namespace: projet-cloud
+  labels:
+    app: rabbitmq
+spec:
+  selector:
+    matchLabels:
+      app: rabbitmq-pod
+  template:
+    metadata:
+      labels:
+        app: rabbitmq-pod
+    spec:
+      containers:
+      - name: rabbitmq
+        image: rabbitmq:3-management
+        ports:
+          - containerPort: 15672
+          - containerPort: 5672
+      restartPolicy: Always

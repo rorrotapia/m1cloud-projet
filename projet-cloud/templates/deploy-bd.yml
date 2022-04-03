@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mssql-deployment
+  namespace: projet-cloud
+  labels:
+    app: mssql
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mssql-pod
+  template:
+    metadata:
+      labels:
+        app: mssql-pod
+    spec:
+      containers:
+      - image: bart120/yv-database:1
+        name: mssql
+        ports:
+        - containerPort: 1433
+          name: mssql-port
+        volumeMounts:
+        - name: mssql-volume
+          mountPath: /var/opt/mssql
+      volumes:
+      - name: mssql-volume
+        persistentVolumeClaim:
+          claimName: mssql-volume-claim
+      restartPolicy: Always

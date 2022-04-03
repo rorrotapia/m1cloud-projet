@@ -1,17 +1,3 @@
-apiVersion: v1
-kind: Service
-metadata:
-  name: elasticsearch
-  namespace: projet-cloud
-spec:
-  selector:
-    app: elasticsearch
-  ports:
-  - name: elasticsearch
-    port: 9200
-    targetPort: 9200
-  type: ClusterIP
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:

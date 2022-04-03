@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webmvc-deployment
+  namespace: projet-cloud
+  labels:
+    app: webmvc
+spec:
+  selector:
+    matchLabels:
+      app: webmvc-pod
+  template:
+    metadata:
+      labels:
+        app: webmvc-pod
+    spec:
+      containers:
+      - name: webmvc
+        image: fofanad97/projet-web:v1
+        ports:
+          - containerPort: 80
+        resources:
+          requests:
+            memory: 900Mi
+            cpu: 0.5
+          limits:
+            memory: 2000Mi
+            cpu: 1
+      restartPolicy: Always

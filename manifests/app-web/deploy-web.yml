@@ -1,18 +1,3 @@
-#service
-apiVersion: v1
-kind: Service
-metadata:
-  name: webmvc-service
-  namespace: projet-cloud
-spec:
-  selector:
-    app: webmvc-pod
-  ports:
-    - port: 8080
-      targetPort: 80
-  type: ClusterIP
----
-#deployment
 apiVersion: apps/v1
 kind: Deployment
 metadata:

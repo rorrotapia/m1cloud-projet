@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jobs-deployment
+  namespace: projet-cloud
+  labels:
+    app: jobs-api
+spec:
+  selector:
+    matchLabels:
+      app: jobs-api-pod
+  template:
+    metadata:
+      labels:
+        app: jobs-api-pod
+    spec:
+      containers:
+      - name: jobs-api
+        image: fofanad97/projet-jobs-api:v1
+        ports:
+          - containerPort: 80
+        env: 
+        - name: ConnectionString
+          value: Server=mssql-service;User=sa;Password=Pass@word;Database=dotnetgigs.jobs;
+        - name: HostRabbitmq
+          value: rabbitmq-service
+        resources:
+          requests:
+            memory: 500Mi
+            cpu: 0.5
+          limits:
+            memory: 1500Mi
+            cpu: 1
+      restartPolicy: Always
