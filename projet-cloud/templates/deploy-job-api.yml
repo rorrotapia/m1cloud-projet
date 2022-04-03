@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: jobs-deployment
-  namespace: projet-cloud
+  namespace: {{ .Values.namespace }}
   labels:
     app: jobs-api
 spec:
@@ -16,12 +16,12 @@ spec:
     spec:
       containers:
       - name: jobs-api
-        image: fofanad97/projet-jobs-api:v1
+        image: "{{ .Values.job-api.image }}:{{ .Values.job-api.imageTag }}"
         ports:
-          - containerPort: 80
+          - containerPort: {{ .Values.service.port }}
         env: 
         - name: ConnectionString
-          value: Server=mssql-service;User=sa;Password=Pass@word;Database=dotnetgigs.jobs;
+          value: {{ .Values.job-api.env.mssqlConectionJob }}
         - name: HostRabbitmq
           value: rabbitmq-service
         resources:

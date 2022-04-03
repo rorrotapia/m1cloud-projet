@@ -13,10 +13,39 @@ redis:
     targetPort: 6379
 
 rabbitmq:
-  redisSpec:
-    port: 6379
-    targetPort: 6379
+  rabbitmqSpec:
+    port: 15672
+    targetPort: 15672
+    port2: 5672
+    targetPort2: 5672
 
+elasticsearch:
+  image: elasticsearch
+  imageTag: 7.14.2
+  elasticsearchSpec:
+    port: 9200
+    targetPort: 9200
+
+kibana:
+  kibanaSpec:
+    port: 5601
+    targetPort: 5601 
+  env:
+    elasticsearchHosts: "http://elasticsearch:9200"
+    elasticsearchUrl: "http://elasticsearch:9200"
+    elasticsearchServerBasePath: "/admin"
+
+job-api:
+  image: fofanad97/projet-jobs-api
+  imageTag: v1
+  env:
+    mssqlConectionJob: "Server=mssql-service;User=sa;Password=Pass@word;Database=dotnetgigs.jobs;"
+
+applicants-api:
+  image: fofanad97/projet-applicants-api
+  imageTag: v1
+  env:
+    mssqlConectionApplicants: "Server=mssql-service;User=sa;Password=Pass@word;Database=dotnetgigs.applicants;"
 
 replicaCount: 1
 

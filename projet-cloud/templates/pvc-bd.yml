@@ -2,7 +2,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: mssql-volume-claim
-  namespace: projet-cloud
+  namespace: {{ .Values.namespace }}
 spec:
   accessModes:
     - ReadWriteOnce

@@ -2,15 +2,15 @@ apiVersion: v1
 kind: Service
 metadata:
   name: rabbitmq-service
-  namespace: projet-cloud
+  namespace: {{ .Values.namespace }}
 spec:
   selector:
     app: rabbitmq-pod
   ports:
-    - port: 15672
+    - port: {{ .Values.rabbitmq.rabbitmqSpec.port }}
       name: rabbitmq-port-1
-      targetPort: 15672
-    - port: 5672
+      targetPort: {{ .Values.rabbitmq.rabbitmqSpec.targetPort }}
+    - port: {{ .Values.rabbitmq.rabbitmqSpec.port2 }}
       name: rabbitmq-port-2
-      targetPort: 5672
-  type: ClusterIP
+      targetPort: {{ .Values.rabbitmq.rabbitmqSpec.targetPort2 }}
+  type: {{ .Values.service.type }}

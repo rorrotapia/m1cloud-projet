@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: applicants-deployment
-  namespace: projet-cloud
+  namespace: {{ .Values.namespace }}
   labels:
     app: applicants-api
 spec:
@@ -16,12 +16,12 @@ spec:
     spec:
       containers:
       - name: applicants-api
-        image: fofanad97/projet-applicants-api:v1
+        image: "{{ .Values.applicants-api.image }}:{{ .Values.applicants-api.imageTag }}"
         ports:
-          - containerPort: 80
+          - containerPort: {{ .Values.service.port }}
         env: 
         - name: ConnectionString
-          value: Server=mssql-service;User=sa;Password=Pass@word;Database=dotnetgigs.applicants;
+          value: {{ .Values.applicants-api.env.mssqlConectionApplicants }}
         - name: HostRabbitmq
           value: rabbitmq-service
         resources:

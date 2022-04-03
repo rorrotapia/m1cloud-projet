@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: kibana-deployment
-  namespace: projet-cloud
+  namespace: {{ .Values.namespace }}
 spec:
   replicas: 1
   selector:
@@ -17,12 +17,12 @@ spec:
       - image: kibana:7.14.2
         name: kibana
         ports:
-        - containerPort: 5601
+        - containerPort: {{ .Values.kibana.kibanaSpec.port }}
         env:
           - name: ELASTICSEARCH_HOSTS
-            value: http://elasticsearch:9200
+            value: {{ .Values.kibana.env.elasticsearchHosts }}
           - name: ELASTICSEARCH_URL
-            value: http://elasticsearch:9200
+            value: {{ .Values.kibana.env.elasticsearchUrl }}
           - name: SERVER_BASEPATH
-            value: "/admin"
+            value: {{ .Values.kibana.env.elasticsearchServerBasePath }}
 
