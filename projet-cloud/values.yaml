@@ -2,40 +2,52 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
+mssql:
+  mssqlSpec:
+    port: 1433
+    targetPort: 1433
+
+redis:
+  redisSpec:
+    port: 6379
+    targetPort: 6379
+
+rabbitmq:
+  redisSpec:
+    port: 6379
+    targetPort: 6379
+
+
 replicaCount: 1
 
 image:
   repository: nginx
   pullPolicy: IfNotPresent
-  tag: "1.1"
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: ""
+
+
+
+namespace: projet-cloud
+
+podAnnotations: {}
 
 service:
   type: ClusterIP
   port: 80
 
 ingress:
-  enabled: true
+  enabled: false
+  className: ""
   annotations: {}
-    kubernetes.io/ingress.class: nginx
-    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
   hosts:
-    - host: localhost
+    - host: chart-example.local
       paths:
         - path: /
-          pathType: Prefix
+          pathType: ImplementationSpecific
   tls: []
-    - secretName: tls-secret
-      hosts:
-        - localhost
-
-resources: {}
-  # We usually recommend not to specify default resources and to leave this as a conscious
-  # choice for the user. This also increases chances charts run on environments with little
-  # resources, such as Minikube. If you do want to specify resources, uncomment the following
-  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
-  # limits:
-  #   cpu: 100m
-  #   memory: 128Mi
-  # requests:
-  #   cpu: 100m
-  #   memory: 128Mi
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local

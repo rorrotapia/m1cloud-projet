@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: webmvc-deployment
-  namespace: projet-cloud
+  namespace: {{ .Values.namespace }}
   labels:
     app: webmvc
 spec:
@@ -18,7 +18,7 @@ spec:
       - name: webmvc
         image: fofanad97/projet-web:v1
         ports:
-          - containerPort: 80
+          - containerPort: {{ .Values.service.port }}
         resources:
           requests:
             memory: 900Mi

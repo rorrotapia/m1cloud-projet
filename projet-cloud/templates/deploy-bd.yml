@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: mssql-deployment
-  namespace: projet-cloud
+  namespace: {{ .Values.namespace }}
   labels:
     app: mssql
 spec:
@@ -19,7 +19,7 @@ spec:
       - image: bart120/yv-database:1
         name: mssql
         ports:
-        - containerPort: 1433
+        - containerPort: {{ .Values.mssql.mssqlSpec.port }}
           name: mssql-port
         volumeMounts:
         - name: mssql-volume
