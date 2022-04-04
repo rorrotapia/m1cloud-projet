@@ -14,6 +14,17 @@ spec:
       labels:
         app: webmvc-pod
     spec:
+      affinity:
+        podAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: app
+                operator: In
+                values:
+                - applicants-api-pod
+                - jobs-api-pod
+            topologyKey: "kubernetes.io/hostname"
       containers:
       - name: webmvc
         image: "{{ .Values.web.image }}:{{ .Values.web.imageTag }}"
