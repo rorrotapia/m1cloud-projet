@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: logstash-deployment
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: logstash
+spec:
+  selector:
+    matchLabels:
+      app: logstash-pod
+  template:
+    metadata:
+      labels:
+        app: logstash-pod
+    spec:
+      containers:
+      - image: "{{ .Values.logstash.image }}:{{ .Values.logstash.imageTag }}"
+        name: logstash
+        volumeMounts:
+        - mountPath: /config/logstash.conf
+          name: config
+        command:
+        - "logstash"
+        - "-f"
+        - "/config/logstash.conf"
+      volumes:
+      - name: config
+        configMap:
+          name: logstash-config

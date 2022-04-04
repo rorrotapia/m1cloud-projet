@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: logstash-deployment
+  namespace: projet-cloud
+  labels:
+    app: logstash
+spec:
+  selector:
+    matchLabels:
+      app: logstash-pod
+  template:
+    metadata:
+      labels:
+        app: logstash-pod
+    spec:
+      containers:
+      - image: logstash:7.14.2
+        name: logstash
+        volumeMounts:
+        - mountPath: /config/logstash.conf
+          name: config
+        command:
+        - "logstash"
+        - "-f"
+        - "/config/logstash.conf"
+      volumes:
+      - name: config
+        configMap:
+          name: logstash-config

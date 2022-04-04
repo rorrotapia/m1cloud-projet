@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: logstash-service
+  namespace: projet-cloud
+spec:
+  selector:
+    app: logstash
+  ports:
+  - port: 80
+    targetPort: 80
+  type: ClusterIP

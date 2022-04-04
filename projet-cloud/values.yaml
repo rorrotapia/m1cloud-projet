@@ -24,6 +24,10 @@ rabbitmq:
     port2: 5672
     targetPort2: 5672
 
+logstash:
+  image: logstash
+  imageTag: 7.14.2
+
 elasticsearch:
   image: elasticsearch
   imageTag: 7.14.2
