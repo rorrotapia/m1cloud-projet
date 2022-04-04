@@ -68,10 +68,6 @@ web:
   image: fofanad97/projet-web
   imageTag: v1
 
-replicaCount: 1
-
-namespace: projet-cloud
-
 
 service:
   type: ClusterIP
