@@ -16,12 +16,12 @@ spec:
     spec:
       containers:
       - name: jobs-api
-        image: "{{ .Values.job-api.image }}:{{ .Values.job-api.imageTag }}"
+        image: "{{ .Values.jobApi.image }}:{{ .Values.jobApi.imageTag }}"
         ports:
           - containerPort: {{ .Values.service.port }}
         env: 
         - name: ConnectionString
-          value: {{ .Values.job-api.env.mssqlConectionJob }}
+          value: {{ .Values.jobApi.env.mssqlConectionJob }}
         - name: HostRabbitmq
           value: rabbitmq-service
         resources:

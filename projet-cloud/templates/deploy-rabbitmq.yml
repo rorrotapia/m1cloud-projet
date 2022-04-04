@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: rabbitmq
-        image: rabbitmq:3-management
+        image: "{{ .Values.rabbitmq.image }}:{{ .Values.rabbitmq.imageTag }}"
         ports:
           - containerPort: {{ .Values.rabbitmq.rabbitmqSpec.port }}
           - containerPort: {{ .Values.rabbitmq.rabbitmqSpec.port2 }}

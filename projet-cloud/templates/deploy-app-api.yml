@@ -16,12 +16,12 @@ spec:
     spec:
       containers:
       - name: applicants-api
-        image: "{{ .Values.applicants-api.image }}:{{ .Values.applicants-api.imageTag }}"
+        image: "{{ .Values.applicantsApi.image }}:{{ .Values.applicantsApi.imageTag }}"
         ports:
           - containerPort: {{ .Values.service.port }}
         env: 
         - name: ConnectionString
-          value: {{ .Values.applicants-api.env.mssqlConectionApplicants }}
+          value: {{ .Values.applicantsApi.env.mssqlConectionApplicants }}
         - name: HostRabbitmq
           value: rabbitmq-service
         resources:

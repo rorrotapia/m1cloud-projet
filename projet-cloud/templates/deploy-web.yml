@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: webmvc
-        image: fofanad97/projet-web:v1
+        image: "{{ .Values.web.image }}:{{ .Values.web.imageTag }}"
         ports:
           - containerPort: {{ .Values.service.port }}
         resources:

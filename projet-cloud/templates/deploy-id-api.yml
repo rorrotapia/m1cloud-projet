@@ -16,12 +16,12 @@ spec:
     spec:
       containers:
       - name: identity-api
-        image: fofanad97/projet-identity-api:v1
+        image: "{{ .Values.identityApi.image }}:{{ .Values.identityApi.imageTag }}"
         ports:
           - containerPort: {{ .Values.service.port }}
         env: 
         - name: RedisHost
-          value: redis-service:6379
+          value: {{ .Values.identityApi.env.redisHost }}
         - name: HostRabbitmq
           value: rabbitmq-service
         resources:

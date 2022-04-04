@@ -14,7 +14,7 @@ spec:
         app: kibana
     spec:
       containers:
-      - image: kibana:7.14.2
+      - image: "{{ .Values.kibana.image }}:{{ .Values.kibana.imageTag }}"
         name: kibana
         ports:
         - containerPort: {{ .Values.kibana.kibanaSpec.port }}

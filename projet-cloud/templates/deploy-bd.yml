@@ -16,7 +16,7 @@ spec:
         app: mssql-pod
     spec:
       containers:
-      - image: bart120/yv-database:1
+      - image: "{{ .Values.mssql.image }}:{{ .Values.mssql.imageTag }}"
         name: mssql
         ports:
         - containerPort: {{ .Values.mssql.mssqlSpec.port }}
