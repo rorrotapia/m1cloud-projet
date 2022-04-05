@@ -14,6 +14,16 @@ spec:
       labels:
         app: jobs-api-pod
     spec:
+      # affinity:
+      #   podAffinity:
+      #     requiredDuringSchedulingIgnoredDuringExecution:
+      #     - labelSelector:
+      #         matchExpressions:
+      #         - key: app
+      #           operator: In
+      #           values:
+      #           - mssql-pod
+      #       topologyKey: "kubernetes.io/zone"
       containers:
       - name: jobs-api
         image: fofanad97/projet-jobs-api:v1

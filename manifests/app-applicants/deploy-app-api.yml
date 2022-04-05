@@ -14,6 +14,16 @@ spec:
       labels:
         app: applicants-api-pod
     spec:
+      # affinity:
+      #   podAffinity:
+      #     requiredDuringSchedulingIgnoredDuringExecution:
+      #     - labelSelector:
+      #         matchExpressions:
+      #         - key: app
+      #           operator: In
+      #           values:
+      #           - mssql-pod
+      #       topologyKey: "kubernetes.io/zone"
       containers:
       - name: applicants-api
         image: fofanad97/projet-applicants-api:v1

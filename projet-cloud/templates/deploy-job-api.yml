@@ -14,16 +14,16 @@ spec:
       labels:
         app: jobs-api-pod
     spec:
-      affinity:
-        podAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-          - labelSelector:
-              matchExpressions:
-              - key: app
-                operator: In
-                values:
-                - mssql-pod
-            topologyKey: "kubernetes.io/hostname"
+      # affinity:
+      #   podAffinity:
+      #     requiredDuringSchedulingIgnoredDuringExecution:
+      #     - labelSelector:
+      #         matchExpressions:
+      #         - key: app
+      #           operator: In
+      #           values:
+      #           - mssql-pod
+      #       topologyKey: "kubernetes.io/hostname"
       containers:
       - name: jobs-api
         image: "{{ .Values.jobApi.image }}:{{ .Values.jobApi.imageTag }}"
