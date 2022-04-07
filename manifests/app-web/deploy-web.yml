@@ -17,6 +17,24 @@ spec:
       containers:
       - name: webmvc
         image: fofanad97/projet-web:v1
+        args:
+         - /bin/sh
+         - -c
+         - touch /tmp/healthy; sleep 30; rm -rf /tmp/healthy; sleep 600
+        livenessProbe:
+          exec:
+            command:
+            - cat
+            - /tmp/healthy
+          initialDelaySeconds: 5
+          periodSeconds: 5
+        readinessProbe:
+           exec:
+             command:
+             - cat
+             - /tmp/healthy
+           initialDelaySeconds: 5
+           periodSeconds: 5
         ports:
           - containerPort: 80
         resources:
