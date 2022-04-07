@@ -1,6 +1,14 @@
 
 # Projet Conteneurisation et Orchestration - Ynov
 
+# Conteneur
+# Creations des fichiers
+`docker build projet-nom:v1 fofanad97/projet-nom:v1 d -t projet-nom:v1 .`
+`docker tag projet-nom:v1 fofanad97/projet-nom:v1`
+`docker push projet-nom:v1 fofanad97/projet-nom:v1`
+# Voir les images
+
+
 ## DEPLOIMENT AUTOMATISE
 
 #### Installer la chart Helm
