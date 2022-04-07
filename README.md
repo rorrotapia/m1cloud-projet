@@ -16,6 +16,19 @@
 #### Desinstaller la chart Helm
 `helm uninstall projet -n projet-cloud`
 
+## BILAN DE SANTE
+
+### Vérification des Liveness et readiness probes 
+`kubectl describe pod <pod name> -n projet-cloud`
+
+### Vérification des métriques serveur
+`kubectl top pods -n projet-cloud`
+`kubectl top nodes -n projet-cloud`
+
+### Configurer la redirection de port pour Prometheus
+`kubectl port-forward <pod name> 8080:9090 -n projet-cloud`
+
+
 ## LOGS
 
 ### Deploiement d'Elastic
