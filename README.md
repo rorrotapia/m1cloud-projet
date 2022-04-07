@@ -2,11 +2,17 @@
 # Projet Conteneurisation et Orchestration - Ynov
 
 ## Conteneur
-# Conteneur
-# Creations des fichiers
+# Creations des images
+
+Lancez la commande suivante pour creer l'image du service lié au projet (applicants-api, identity-api, mssql, redis, rabbitmq)
 `docker build projet-nom:v1 fofanad97/projet-nom:v1 d -t projet-nom:v1 .`
+
+Lancez la commande suivante pour chaque image à fin de la tagger
 `docker tag projet-nom:v1 fofanad97/projet-nom:v1`
+
+Lancez la commande docker push pour renvoyer les images dans le repository
 `docker push projet-nom:v1 fofanad97/projet-nom:v1`
+
 # Voir les images
 
 ![screen1](./screenshots/screen1.png)
