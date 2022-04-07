@@ -1,8 +1,10 @@
 
 # Projet Conteneurisation et Orchestration - Ynov
 
-`helm install projet ./projet-cloud`
-
+Installer la chart Helm
+`helm install projet ./projet-cloud -n projet-cloud`
+Desinstaller la chart Helm
+`helm uninstall projet -n projet-cloud`
 
 ## Membres 
 
