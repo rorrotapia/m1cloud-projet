@@ -1,6 +1,7 @@
 
 # Projet Conteneurisation et Orchestration - Ynov
 
+## Conteneur
 # Conteneur
 # Creations des fichiers
 `docker build projet-nom:v1 fofanad97/projet-nom:v1 d -t projet-nom:v1 .`
@@ -8,15 +9,17 @@
 `docker push projet-nom:v1 fofanad97/projet-nom:v1`
 # Voir les images
 
+![screen1](./screenshots/screen1.png)
 
-## DEPLOIMENT AUTOMATISE
 
-#### Installer la chart Helm
-`helm install projet ./projet-cloud -n projet-cloud`
-#### Desinstaller la chart Helm
-`helm uninstall projet -n projet-cloud`
+## Hébergement
+AZURE
 
-## BILAN DE SANTE
+## Performance
+
+
+
+## Bilan de santé
 
 ### Vérification des Liveness et readiness probes 
 `kubectl describe pod <pod name> -n projet-cloud`
@@ -29,8 +32,12 @@
 `kubectl port-forward <pod name> 8080:9090 -n projet-cloud`
 
 
-## LOGS
 
+## Sécurité
+
+
+
+## Logs
 ### Deploiement d'Elastic
 `Helm repo add elastic https://helm.elastic.co/ `
 
@@ -45,6 +52,19 @@
 
 #### Configurez la redirection de port pour Kibana : 
 `kubectl port-forward deployment/kibana-kibana -n projet-elastic 5601`
+
+## Déploiement automatisé
+#### Installer la chart Helm
+`helm install projet ./projet-cloud -n projet-cloud`
+#### Desinstaller la chart Helm
+`helm uninstall projet -n projet-cloud`
+
+# Projet Conteneurisation et Orchestration - Ynov
+
+
+
+
+
 
 ## Membres 
 
