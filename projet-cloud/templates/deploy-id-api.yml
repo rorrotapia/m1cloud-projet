@@ -14,16 +14,15 @@ spec:
       labels:
         app: identity-api-pod
     spec:
-      # affinity:
-      #   podAffinity:
-      #     requiredDuringSchedulingIgnoredDuringExecution:
-      #     - labelSelector:
-      #         matchExpressions:
-      #         - key: app
-      #           operator: In
-      #           values:
-      #           - redis-pod
-      #       topologyKey: "kubernetes.io/hostname"
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes.io/hostname
+                operator: In
+                values:
+                - docker-desktop
       containers:
       - name: identity-api
         image: "{{ .Values.identityApi.image }}:{{ .Values.identityApi.imageTag }}"
