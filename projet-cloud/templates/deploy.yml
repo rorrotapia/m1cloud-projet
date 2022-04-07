@@ -15,6 +15,15 @@ spec:
       labels:
         app: rabbitmq-pod
     spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes.io/hostname
+                operator: In
+                values:
+                - docker-desktop
       containers:
       - name: rabbitmq
         image: "{{ .Values.rabbitmq.image }}:{{ .Values.rabbitmq.imageTag }}"
@@ -40,6 +49,15 @@ spec:
       labels:
         app: redis-pod
     spec:
+      affinity:
+          nodeAffinity:
+            requiredDuringSchedulingIgnoredDuringExecution:
+              nodeSelectorTerms:
+              - matchExpressions:
+                - key: kubernetes.io/hostname
+                  operator: In
+                  values:
+                  - docker-desktop
       containers:
       - name: redis
         image: {{ .Values.redis.image }}
@@ -81,6 +99,15 @@ spec:
       labels:
         app: mssql-pod
     spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes.io/hostname
+                operator: In
+                values:
+                - docker-desktop
       containers:
       - image: "{{ .Values.mssql.image }}:{{ .Values.mssql.imageTag }}"
         name: mssql
@@ -113,15 +140,15 @@ spec:
       labels:
         app: identity-api-pod
     spec:
-      # affinity:
-      #   nodeAffinity:
-      #     requiredDuringSchedulingIgnoredDuringExecution:
-      #       nodeSelectorTerms:
-      #       - matchExpressions:
-      #         - key: kubernetes.io/hostname
-      #           operator: In
-      #           values:
-      #           - docker-desktop
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes.io/hostname
+                operator: In
+                values:
+                - docker-desktop
       containers:
       - name: identity-api
         image: "{{ .Values.identityApi.image }}:{{ .Values.identityApi.imageTag }}"
@@ -158,15 +185,15 @@ spec:
       labels:
         app: applicants-api-pod
     spec:
-      # affinity:
-      #   nodeAffinity:
-      #     requiredDuringSchedulingIgnoredDuringExecution:
-      #       nodeSelectorTerms:
-      #       - matchExpressions:
-      #         - key: kubernetes.io/hostname
-      #           operator: In
-      #           values:
-      #           - docker-desktop
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes.io/hostname
+                operator: In
+                values:
+                - docker-desktop
       containers:
       - name: applicants-api
         image: "{{ .Values.applicantsApi.image }}:{{ .Values.applicantsApi.imageTag }}"
@@ -203,15 +230,15 @@ spec:
       labels:
         app: jobs-api-pod
     spec:
-      # affinity:
-      #   nodeAffinity:
-      #     requiredDuringSchedulingIgnoredDuringExecution:
-      #       nodeSelectorTerms:
-      #       - matchExpressions:
-      #         - key: kubernetes.io/hostname
-      #           operator: In
-      #           values:
-      #           - docker-desktop
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes.io/hostname
+                operator: In
+                values:
+                - docker-desktop
       containers:
       - name: jobs-api
         image: "{{ .Values.jobApi.image }}:{{ .Values.jobApi.imageTag }}"
@@ -248,17 +275,15 @@ spec:
       labels:
         app: webmvc-pod
     spec:
-      # affinity:
-      #   podAffinity:
-      #     requiredDuringSchedulingIgnoredDuringExecution:
-      #     - labelSelector:
-      #         matchExpressions:
-      #         - key: app
-      #           operator: In
-      #           values:
-      #           - applicants-api-pod
-      #           - jobs-api-pod
-      #       topologyKey: "kubernetes.io/hostname"
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes.io/hostname
+                operator: In
+                values:
+                - docker-desktop
       containers:
       - name: webmvc
         image: "{{ .Values.web.image }}:{{ .Values.web.imageTag }}"
