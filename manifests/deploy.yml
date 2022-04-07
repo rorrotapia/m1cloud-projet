@@ -1,5 +1,91 @@
+#redis.yml
+#service
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis-service
+  namespace: projet-cloud
+spec:
+  selector:
+    app: redis-pod
+  ports:
+    - port: 6379
+      targetPort: 6379
+  type: ClusterIP
+---
+#deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis-deployment
+  namespace: projet-cloud
+  labels:
+    app: redis
+spec:
+  selector:
+    matchLabels:
+      app: redis-pod
+  template:
+    metadata:
+      labels:
+        app: redis-pod
+    spec:
+      containers:
+      - name: redis
+        image: redis
+        ports:
+          - containerPort: 6379
+        resources:
+          requests:
+            memory: 500Mi
+            cpu: 4
+      restartPolicy: Always
+---
+#rabbitmq.yml
+#service
+apiVersion: v1
+kind: Service
+metadata:
+  name: rabbitmq-service
+  namespace: projet-cloud
+spec:
+  selector:
+    app: rabbitmq-pod
+  ports:
+    - port: 15672
+      name: rabbitmq-port-1
+      targetPort: 15672
+    - port: 5672
+      name: rabbitmq-port-2
+      targetPort: 5672
+  type: ClusterIP
+---
+#deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rabbitmq-deployment
+  namespace: projet-cloud
+  labels:
+    app: rabbitmq
+spec:
+  selector:
+    matchLabels:
+      app: rabbitmq-pod
+  template:
+    metadata:
+      labels:
+        app: rabbitmq-pod
+    spec:
+      containers:
+      - name: rabbitmq
+        image: rabbitmq:3-management
+        ports:
+          - containerPort: 15672
+          - containerPort: 5672
+      restartPolicy: Always
+---
 #applicants-api.yml
-
 #service
 apiVersion: v1
 kind: Service
@@ -50,9 +136,7 @@ spec:
             cpu: 1
       restartPolicy: Always
 ---    
-
 #identity-api.yml  
-
 #service
 apiVersion: v1
 kind: Service
@@ -103,9 +187,7 @@ spec:
             cpu: 1
       restartPolicy: Always
 ---
-
 #jobs-api.yml
-
 #service
 apiVersion: v1
 kind: Service
@@ -156,9 +238,7 @@ spec:
             cpu: 1
       restartPolicy: Always
 ---
-
 #mssql.yml
-
 #service mssql
 apiVersion: v1
 kind: Service
@@ -219,100 +299,7 @@ spec:
           claimName: mssql-volume-claim
       restartPolicy: Always
 ---
-
-#rabbitmq.yml
-
-#service
-apiVersion: v1
-kind: Service
-metadata:
-  name: rabbitmq-service
-  namespace: projet-cloud
-spec:
-  selector:
-    app: rabbitmq-pod
-  ports:
-    - port: 15672
-      name: rabbitmq-port-1
-      targetPort: 15672
-    - port: 5672
-      name: rabbitmq-port-2
-      targetPort: 5672
-  type: ClusterIP
----
-#deployment
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: rabbitmq-deployment
-  namespace: projet-cloud
-  labels:
-    app: rabbitmq
-spec:
-  selector:
-    matchLabels:
-      app: rabbitmq-pod
-  template:
-    metadata:
-      labels:
-        app: rabbitmq-pod
-    spec:
-      containers:
-      - name: rabbitmq
-        image: rabbitmq:3-management
-        ports:
-          - containerPort: 15672
-          - containerPort: 5672
-      restartPolicy: Always
----
-
-#redis.yml
-
-#service
-apiVersion: v1
-kind: Service
-metadata:
-  name: redis-service
-  namespace: projet-cloud
-spec:
-  selector:
-    app: redis-pod
-  ports:
-    - port: 6379
-      targetPort: 6379
-  type: ClusterIP
----
-#deployment
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: redis-deployment
-  namespace: projet-cloud
-  labels:
-    app: redis
-spec:
-  selector:
-    matchLabels:
-      app: redis-pod
-  template:
-    metadata:
-      labels:
-        app: redis-pod
-    spec:
-      containers:
-      - name: redis
-        image: redis
-        ports:
-          - containerPort: 6379
-        resources:
-          requests:
-            memory: 500Mi
-            cpu: 4
-      restartPolicy: Always
----
-
 #webmvc.yml
-
 #service
 apiVersion: v1
 kind: Service
@@ -358,105 +345,17 @@ spec:
             cpu: 1
       restartPolicy: Always
 ---
-
-
-#ElasticSearch
-
-#service
 apiVersion: v1
-kind: Service
+kind: Secret
 metadata:
-  name: elasticsearch
+  name: tls-secret
   namespace: projet-cloud
-spec:
-  selector:
-    app: elasticsearch
-  ports:
-  - name: elasticsearch
-    port: 9200
-    targetPort: 9200
-  type: ClusterIP
+data:
+  tls.crt: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tDQpNSUlETFRDQ0FoV2dBd0lCQWdJVUpHUkRId25uSDdqWDBxMkVpWDFuWGxsL0c3RXdEUVlKS29aSWh2Y05BUUVMDQpCUUF3SmpFUk1BOEdBMVVFQXd3SWJtZHBibmh6ZG1NeEVUQVBCZ05WQkFvTUNHNW5hVzU0YzNaak1CNFhEVEl5DQpNRFF3TXpFMU1qa3hOVm9YRFRJek1EUXdNekUxTWpreE5Wb3dKakVSTUE4R0ExVUVBd3dJYm1kcGJuaHpkbU14DQpFVEFQQmdOVkJBb01DRzVuYVc1NGMzWmpNSUlCSWpBTkJna3Foa2lHOXcwQkFRRUZBQU9DQVE4QU1JSUJDZ0tDDQpBUUVBdHBzdisyRDNqRnBwa2tvdlZPSlJTa09VeVE1bzI4aGFWSlFYU3NCQXFqbng5UGx3U0h2YmczYUVYdlg0DQpNeDgrMVdlbTdDMEJXNmJ2dENWK1JFSUwwMDJoUnNBaGp2QWxxems2WENqYXRVMWpVaWpoR3VTRmNuTlFrRDV2DQpRblR2T2NWOGJ2L3Y2Y2JlWVE5Nzl3VkZkbXN6NGdFenR3WXlUS3IxNElmMEtaNktoUFp2QXlqdVRnOE9yT25rDQp5b1pQT0pmSDlsMkdBZisxcTlnNDFLZUNUS3ovUVpaOG9HcHlhenN1ZTVGendlVnVPNlM3TlNtMHVMYS9aVHdVDQpCdnY3VlFGdVF2bkhqenMzYTZUbkRKTzVEUUxiWmg1QnZ0ZXNSYlMySHVoMlFaQ2tlMmdEUExOeGwvR0w0b3hEDQpjWmhoTC9xdi9VYzlBZDdKL2JrMG0xVnBQd0lEQVFBQm8xTXdVVEFkQmdOVkhRNEVGZ1FVa2RTRjM0a2tONUFzDQp3ZTdFektOLzZuNG43RGd3SHdZRFZSMGpCQmd3Rm9BVWtkU0YzNGtrTjVBc3dlN0V6S04vNm40bjdEZ3dEd1lEDQpWUjBUQVFIL0JBVXdBd0VCL3pBTkJna3Foa2lHOXcwQkFRc0ZBQU9DQVFFQXJkS0lmVjJqQ3B0ejEwbStBNlo4DQpLTExLdGNsaXVQRFY5dDNXM1RRZGRkeXI0MlRhSzBjTkdPRWQ4aFhqN3RJRXdzcS80QS8wZ0FTenNsdTlwNEI0DQpnQlpLb3p5OHlienVKem5YV0N4bnVWRnZkZll2UFArSXlodm5YcVQra1hENGd4dlczOUpvVlJmd0VGamtIWjFMDQpUTHFtQ2RJS3R0TVBTa3dNek94ckNkL3ZWL3Z5OTloc051eFhESU93M081QlRJeVZoUFFVcWZnYkFFMmRzazc1DQp1QzMzbGdNUE53NVdVeVc1TU1GT2VRekZaWGVIT3E3QzJpN2l4Nk9rbTR1eGdVQkRRa3I1QkE0aHJHQ2d3dGFvDQpiRG1iYmprL1NFVVZyeHhTTXB4N2VNSCtISkZoY2VOL3hwY1RKY1RNZGduL2dWelJiQVVCWVl0eUExWmIzUGp5DQozZz09DQotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0tDQo=
+  tls.key: LS0tLS1CRUdJTiBQUklWQVRFIEtFWS0tLS0tDQpNSUlFdkFJQkFEQU5CZ2txaGtpRzl3MEJBUUVGQUFTQ0JLWXdnZ1NpQWdFQUFvSUJBUUMybXkvN1lQZU1XbW1TDQpTaTlVNGxGS1E1VEpEbWpieUZwVWxCZEt3RUNxT2ZIMCtYQkllOXVEZG9SZTlmZ3pIejdWWjZic0xRRmJwdSswDQpKWDVFUWd2VFRhRkd3Q0dPOENXck9UcGNLTnExVFdOU0tPRWE1SVZ5YzFDUVBtOUNkTzg1eFh4dS8rL3B4dDVoDQpEM3YzQlVWMmF6UGlBVE8zQmpKTXF2WGdoL1Fwbm9xRTltOERLTzVPRHc2czZlVEtoazg0bDhmMlhZWUIvN1dyDQoyRGpVcDRKTXJQOUJsbnlnYW5Kck95NTdrWFBCNVc0N3BMczFLYlM0dHI5bFBCUUcrL3RWQVc1QytjZVBPemRyDQpwT2NNazdrTkF0dG1Ia0crMTZ4RnRMWWU2SFpCa0tSN2FBTThzM0dYOFl2aWpFTnhtR0V2K3EvOVJ6MEIzc245DQp1VFNiVldrL0FnTUJBQUVDZ2dFQUxJdk1GenRPK0Y2Ly9VOTZuMjc4WEswQzJVOWFGaStZbGFSdzBDdjVPbTJiDQpVR01mV0pkYWRBWVFBYWhvYlhRMFhGUUdYUHdYcGplaHB5VTBXY3R3M2hIRWc2RndMbEg0Sm41MTliQ0R0aEhVDQpabUVSbFFGbGFvZW1BaUl3K3huU21Cbk1vcmx0MmU1SkpvMWo5TjFFMWtBTnJwY1RlaFVaWlNtWmhMWTF3b2NBDQpoR05XeXlqbnpsL3h0NU9UOTVhNHlsdG9QaC9jbEZQWXcxeGNhcFcxVEZOK0x0NzdGWFcwcFZSdVVaVmtTaFJiDQo2QjZjbGI1WEpZOGwzaHB5aUlSbkttSjFuRmRGT0xhVzhXSlpKcTVBaUg4ZGE3bXNDblZyT3ppT0dqSVdSSkFIDQo2NzRITWxpZVZsV21Cb3hzN1Q0OWJKcHh0TGdDYmIvNWlBRk1neUw0NVFLQmdRRFNIUnc1UGJBYTd3MGFrQVVKDQpSWi9OYTloMXJZSWlSMDZyeDZ3NWdrWGdJb3Q1UWR4RzJhd0licXpKTGZoWW9uZUw2cFZjZHlpRGliWlgyRzBWDQp6Z2RpTVJOWmZSNHhCUjFoVkFpR1BjbXMxeDdRbEtoWFM0MlBhUEVLZzZTVkc2dWFXODZ2bk1Ba3BtSjVwRTJRDQp6elNLQUNKNEl1ZTYvci82b2lpN3J5Ync3UUtCZ1FEZWZEVGl6NEkxcExiT0xjeG4yNjFjUGI2VlQvMG9ISlhRDQo0QnhYTnlCSHY5ZmZyZDVxUWgraDNKUDVSRGdwQmFlYi80QUJ2bTRnZ2hnQ0V5SHBZZjBRM29tc3ZpaGI2UFFqDQpJUHRFaVlkWUd4ZHJjc0ROVkZxZVhIM1ZxTXJ0K0w0ZEI2TVVTaEg4VURlUXJMMXgrUjU4MnRZWGNPdFRwTkR6DQo0ZTJUcWgwNVd3S0JnR0VKZHE1czhmY09iaFBWYmE0QmpMTDNXcW5HYnpKYmtsYTlTYW5wbzFISFFuakcxTytYDQp1ZDdQRmxkM05wbmd0cXRVdEpSV3A4eFAvbm1GaDZPcFdqbWNCcDZ1clJIZ2xkZ01VaitGSzYzNlQ4M3V5ZXcvDQpCV3ExQVpWa2hNOGtUMVZqandvRnI2dDllRDlMaFZNYWp0NG8vOEpTQkltVSs1N0o0MXdDb1U1bEFvR0FYK1pZDQpBWUFDbDA3VmdVL2FjTllQQnRpU2d0ZkV2bnA3MVZvVXZUOUV5Y2lXcTVMTmNTM3BacUttb2VaVzhzKytMSTdZDQpSV2dwSGhnVmN5ZCtFWlFzT2c1Q2Q5UkxuenB0cVlxNDVCVUg0dUZpbWUwUDBESFJFYnU2ZmROUkRYeVByZ0d4DQp1TGdvd29KdFFRNUVacEZFSS90TUZ6U1VLeXk2NkxUMDdCYUNuRXNDZ1lCcFdXWmF0bnJWd056RTVEV3JvN09vDQpxdzh4YVM4bFdwMjhKUnIrU0IySGFTeEV6Qm16K01VOURleDFCazd3RGlmVmdZNXlISmpUK2I4em15eVV2UXhYDQpwWVFWQjZsOXlzMFMzcnZUT0s1R0tRZXVSSFBiemloa0lxd2QrNzVpakhYdjM2OTBsRXpZbE1WdDd0K0xHRGVTDQp1RmJtUVdsdXcyLzlNbEErOFNMeW1BPT0NCi0tLS0tRU5EIFBSSVZBVEUgS0VZLS0tLS0NCg==
+type: Opaque
 ---
-#deployment
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: elasticsearch-deployment
-  namespace: projet-cloud
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: elasticsearch
-  template:
-    metadata:
-      labels:
-        app: elasticsearch
-    spec:
-      containers:
-      - image: elasticsearch:7.14.2
-        name: elasticsearch
-        env:
-        - name: ES_JAVA_OPTS
-          value: -Xms512m -Xmx512m
-        - name: discovery.type
-          value: single-node
-      initContainers:
-      - name: increase-vm-max-map
-        image: busybox
-        ports:
-        - containerPort: 9200
-        command: ["sysctl", "-w", "vm.max_map_count=262144"]
-        securityContext:
-          privileged: true
----
-
-#Kibana
-
-apiVersion: v1
-kind: Service
-metadata:
-  name: kibana-service
-  namespace: projet-cloud
-spec:
-  selector:
-    app: kibana
-  ports:
-  - port: 80
-    targetPort: 5601
-  type: ClusterIP
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: kibana-deployment
-  namespace: projet-cloud
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: kibana
-  template:
-    metadata:
-      labels:
-        app: kibana
-    spec:
-      containers:
-      - image: kibana:7.14.2
-        name: kibana
-        ports:
-        - containerPort: 5601
-        env:
-          - name: ELASTICSEARCH_HOSTS
-            value: http://elasticsearch:9200
-          - name: ELASTICSEARCH_URL
-            value: http://elasticsearch:9200
-          - name: SERVER_BASEPATH
-            value: "/admin"
-
----
-#ingress.yml
-
+# ingress
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
@@ -464,7 +363,7 @@ metadata:
   namespace: projet-cloud
   annotations:
     kubernetes.io/ingress.class: nginx
-    nginx.ingress.kubernetes.io/rewrite-target: /$2
+    nginx.ingress.kubernetes.io/rewrite-target: /
     nginx.ingress.kubernetes.io/ssl-redirect: "true"
 spec:
   tls:
@@ -475,17 +374,10 @@ spec:
   - host: localhost
     http:
       paths:
-      - path: /(/|$)(.*)
+      - path: /
         pathType: Prefix
         backend:
           service:
             name: webmvc-service
-            port:
-              number: 80
-      - path: /admin(/|$)(.*)
-        pathType: Prefix
-        backend:
-          service:
-            name: kibana-service
             port:
               number: 80

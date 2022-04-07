@@ -1,0 +1,101 @@
+# RABBITMQ
+apiVersion: v1
+kind: Service
+metadata:
+  name: rabbitmq-service
+  namespace: {{ .Release.Namespace }}
+spec:
+  selector:
+    app: rabbitmq-pod
+  ports:
+    - port: {{ .Values.rabbitmq.rabbitmqSpec.port }}
+      name: rabbitmq-port-1
+      targetPort: {{ .Values.rabbitmq.rabbitmqSpec.targetPort }}
+    - port: {{ .Values.rabbitmq.rabbitmqSpec.port2 }}
+      name: rabbitmq-port-2
+      targetPort: {{ .Values.rabbitmq.rabbitmqSpec.targetPort2 }}
+  type: {{ .Values.service.type }}
+---
+# REDIS
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis-service
+  namespace: {{ .Release.Namespace }}
+spec:
+  selector:
+    app: redis-pod
+  ports:
+    - port: {{ .Values.redis.redisSpec.port }}
+      targetPort: {{ .Values.redis.redisSpec.targetPort }}
+  type: {{ .Values.service.type }}
+---
+# MSSQL
+apiVersion: v1
+kind: Service
+metadata:
+  name: mssql-service
+  namespace: {{ .Release.Namespace }}
+spec:
+  selector:
+    app: mssql-pod
+  ports:
+    - port: {{ .Values.mssql.mssqlSpec.port }}
+      targetPort: {{ .Values.mssql.mssqlSpec.targetPort }}
+  type: {{ .Values.service.type }}
+---
+# IDENTITY
+apiVersion: v1
+kind: Service
+metadata:
+  name: identity-api-service
+  namespace: {{ .Release.Namespace }}
+spec:
+  selector:
+    app: identity-api-pod
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: {{ .Values.service.port }}
+  type: {{ .Values.service.type }}
+---
+# APPLICANTS
+apiVersion: v1
+kind: Service
+metadata:
+  name: applicants-api-service
+  namespace: {{ .Release.Namespace }}
+spec:
+  selector:
+    app: applicants-api-pod
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: {{ .Values.service.port }}
+  type: {{ .Values.service.type }}
+---
+# JOB
+apiVersion: v1
+kind: Service
+metadata:
+  name: jobs-api-service
+  namespace: {{ .Release.Namespace }}
+spec:
+  selector:
+    app: jobs-api-pod
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: {{ .Values.service.port }}
+  type: {{ .Values.service.type }}
+---
+#WEB
+apiVersion: v1
+kind: Service
+metadata:
+  name: webmvc-service
+  namespace: {{ .Release.Namespace }}
+spec:
+  selector:
+    app: webmvc-pod
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: {{ .Values.service.targetPort }}
+  type: {{ .Values.service.type }}

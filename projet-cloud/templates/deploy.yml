@@ -1,0 +1,274 @@
+# RABBITMQ
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rabbitmq-deployment
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: rabbitmq
+spec:
+  selector:
+    matchLabels:
+      app: rabbitmq-pod
+  template:
+    metadata:
+      labels:
+        app: rabbitmq-pod
+    spec:
+      containers:
+      - name: rabbitmq
+        image: "{{ .Values.rabbitmq.image }}:{{ .Values.rabbitmq.imageTag }}"
+        ports:
+          - containerPort: {{ .Values.rabbitmq.rabbitmqSpec.port }}
+          - containerPort: {{ .Values.rabbitmq.rabbitmqSpec.port2 }}
+      restartPolicy: Always
+---
+# REDIS
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis-deployment
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: redis
+spec:
+  selector:
+    matchLabels:
+      app: redis-pod
+  template:
+    metadata:
+      labels:
+        app: redis-pod
+    spec:
+      containers:
+      - name: redis
+        image: {{ .Values.redis.image }}
+        ports:
+          - containerPort: {{ .Values.redis.redisSpec.port }}
+        resources:
+          requests:
+            memory: 500Mi
+            cpu: 4
+      restartPolicy: Always
+---
+# VOLUME MSSQL
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mssql-volume-claim
+  namespace: {{ .Release.Namespace }}
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2Gi
+---
+# MSSQL
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mssql-deployment
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: mssql
+spec:
+  selector:
+    matchLabels:
+      app: mssql-pod
+  template:
+    metadata:
+      labels:
+        app: mssql-pod
+    spec:
+      containers:
+      - image: "{{ .Values.mssql.image }}:{{ .Values.mssql.imageTag }}"
+        name: mssql
+        ports:
+        - containerPort: {{ .Values.mssql.mssqlSpec.port }}
+          name: mssql-port
+        volumeMounts:
+        - name: mssql-volume
+          mountPath: /var/opt/mssql
+      volumes:
+      - name: mssql-volume
+        persistentVolumeClaim:
+          claimName: mssql-volume-claim
+      restartPolicy: Always
+---
+# IDENTITY
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: identity-deployment
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: identity-api
+spec:
+  selector:
+    matchLabels:
+      app: identity-api-pod
+  template:
+    metadata:
+      labels:
+        app: identity-api-pod
+    spec:
+      # affinity:
+      #   nodeAffinity:
+      #     requiredDuringSchedulingIgnoredDuringExecution:
+      #       nodeSelectorTerms:
+      #       - matchExpressions:
+      #         - key: kubernetes.io/hostname
+      #           operator: In
+      #           values:
+      #           - docker-desktop
+      containers:
+      - name: identity-api
+        image: "{{ .Values.identityApi.image }}:{{ .Values.identityApi.imageTag }}"
+        ports:
+          - containerPort: {{ .Values.service.port }}
+        env: 
+        - name: RedisHost
+          value: {{ .Values.identityApi.env.redisHost }}
+        - name: HostRabbitmq
+          value: rabbitmq-service
+        resources:
+          requests:
+            memory: 500Mi
+            cpu: 0.5
+          limits:
+            memory: 1500Mi
+            cpu: 1
+      restartPolicy: Always
+---
+# APPLICANTS
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: applicants-deployment
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: applicants-api
+spec:
+  selector:
+    matchLabels:
+      app: applicants-api-pod
+  template:
+    metadata:
+      labels:
+        app: applicants-api-pod
+    spec:
+      # affinity:
+      #   nodeAffinity:
+      #     requiredDuringSchedulingIgnoredDuringExecution:
+      #       nodeSelectorTerms:
+      #       - matchExpressions:
+      #         - key: kubernetes.io/hostname
+      #           operator: In
+      #           values:
+      #           - docker-desktop
+      containers:
+      - name: applicants-api
+        image: "{{ .Values.applicantsApi.image }}:{{ .Values.applicantsApi.imageTag }}"
+        ports:
+          - containerPort: {{ .Values.service.port }}
+        env: 
+        - name: ConnectionString
+          value: {{ .Values.applicantsApi.env.mssqlConectionApplicants }}
+        - name: HostRabbitmq
+          value: rabbitmq-service
+        resources:
+          requests:
+            memory: 500Mi
+            cpu: 0.5
+          limits:
+            memory: 1500Mi
+            cpu: 1
+      restartPolicy: Always
+---
+# JOB
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jobs-deployment
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: jobs-api
+spec:
+  selector:
+    matchLabels:
+      app: jobs-api-pod
+  template:
+    metadata:
+      labels:
+        app: jobs-api-pod
+    spec:
+      # affinity:
+      #   nodeAffinity:
+      #     requiredDuringSchedulingIgnoredDuringExecution:
+      #       nodeSelectorTerms:
+      #       - matchExpressions:
+      #         - key: kubernetes.io/hostname
+      #           operator: In
+      #           values:
+      #           - docker-desktop
+      containers:
+      - name: jobs-api
+        image: "{{ .Values.jobApi.image }}:{{ .Values.jobApi.imageTag }}"
+        ports:
+          - containerPort: {{ .Values.service.port }}
+        env: 
+        - name: ConnectionString
+          value: {{ .Values.jobApi.env.mssqlConectionJob }}
+        - name: HostRabbitmq
+          value: rabbitmq-service
+        resources:
+          requests:
+            memory: 500Mi
+            cpu: 0.5
+          limits:
+            memory: 1500Mi
+            cpu: 1
+      restartPolicy: Always
+---
+# WEB
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webmvc-deployment
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: webmvc
+spec:
+  selector:
+    matchLabels:
+      app: webmvc-pod
+  template:
+    metadata:
+      labels:
+        app: webmvc-pod
+    spec:
+      # affinity:
+      #   podAffinity:
+      #     requiredDuringSchedulingIgnoredDuringExecution:
+      #     - labelSelector:
+      #         matchExpressions:
+      #         - key: app
+      #           operator: In
+      #           values:
+      #           - applicants-api-pod
+      #           - jobs-api-pod
+      #       topologyKey: "kubernetes.io/hostname"
+      containers:
+      - name: webmvc
+        image: "{{ .Values.web.image }}:{{ .Values.web.imageTag }}"
+        ports:
+          - containerPort: {{ .Values.service.port }}
+        resources:
+          requests:
+            memory: 900Mi
+            cpu: 0.5
+          limits:
+            memory: 2000Mi
+            cpu: 1
+      restartPolicy: Always
