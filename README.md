@@ -100,16 +100,20 @@ helm repo add elastic https://helm.elastic.co/
 
 #### c. Installation Elastic Search et Kibana
 ```
-helm install elasticsearch --namespace=projet-elastic  elastic/elasticsearch --set replicas=1 --set minimumMasterNodes=1 --set clusterHealthCheckParams="wait_for_status=yellow&timeout=1s"
+helm install elasticsearch --namespace=projet-elastic  elastic/elasticsearch -f override-elastic.yml
 helm install kibana --namespace=projet-elastic  elastic/kibana
 ```
 
 
 #### d. Configurez la redirection de port pour elasticSearch : 
-`kubectl port-forward svc/elasticsearch-master -n projet-elastic 9200`
+```
+kubectl port-forward svc/elasticsearch-master -n projet-elastic 9200
+```
 
 #### e. Configurez la redirection de port pour Kibana : 
-`kubectl port-forward deployment/kibana-kibana -n projet-elastic 5601`
+```
+kubectl port-forward deployment/kibana-kibana -n projet-elastic 5601
+```
 
 ![ElasticSearch](./screenshots/elastic-search.JPG)
 
@@ -117,12 +121,14 @@ helm install kibana --namespace=projet-elastic  elastic/kibana
 ## 5. Déploiement automatisé
 #### a. Installation du chart Helm
 Lancez la commande suivante pour installer le projet
-
-`helm install projet ./projet-cloud -n projet-cloud`
+```
+helm install projet ./projet-cloud -n projet-cloud
+```
 
 Lancez la commande suivante pour desinstaller
-
-`helm uninstall projet -n projet-cloud`
+```
+helm uninstall projet -n projet-cloud
+```
 
 #### b. Fichiers manifests
 Le chart contient principalement les éléments suivants:
