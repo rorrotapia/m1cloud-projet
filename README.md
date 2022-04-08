@@ -53,11 +53,17 @@ helm install nginx-ingress ingress-nginx/ingress-nginx --namespace NAMESPACE --c
 ## 3. Bilan de santé
 Installation des Prometheus
 #### a. Vérification des Liveness et readiness probes 
-```kubectl describe pod <pod name> -n projet-cloud```
+```
+kubectl describe pod <pod name> -n projet-cloud
+```
 
 #### b. Vérification des métriques serveur
-```kubectl top pods -n projet-cloud```
-```kubectl top nodes -n projet-cloud```
+```
+kubectl top pods -n projet-cloud
+```
+```
+kubectl top nodes -n projet-cloud
+```
 
 #### c. Configurer la redirection de port pour Prometheus
 ```
