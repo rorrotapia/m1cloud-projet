@@ -1,25 +1,33 @@
 
 # Projet Conteneurisation et Orchestration - Ynov
 
-## Conteneur
-# Creations des images
-
+## 1. Docker
+### Création des images
 Lancez la commande suivante pour creer l'image du service lié au projet (applicants-api, identity-api, mssql, redis, rabbitmq)
 `docker build projet-nom:v1 fofanad97/projet-nom:v1 d -t projet-nom:v1 .`
 
 Lancez la commande suivante pour chaque image à fin de la tagger
 `docker tag projet-nom:v1 fofanad97/projet-nom:v1`
 
+# Mise en ligne des images
 Lancez la commande docker push pour renvoyer les images dans le repository
 `docker push projet-nom:v1 fofanad97/projet-nom:v1`
 
-# Voir les images
+## 2. Kubernetes
+### Création des manifests
 
-![screen1](./screenshots/screen1.png)
+### Création des resources sur Kubernetes
+Placez vous dans le répertoire des manifests, puis lancez les commandes correspondantes
+`kubectl create -f NAMEFILE
+kubectl delete -f NAMEFILE
+kubectl apply -f NAMEFILE`
 
+### Installation d'un Ingress controller
+`kubectl create namespace NAMESPACE
 
-## Hébergement
-AZURE
+helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
+
+helm install nginx-ingress ingress-nginx/ingress-nginx --namespace NAMESPACE --create-namespace --set controller.replicaCount=2 --set controller.nodeSelector."kubernetes\.io/os"=linux`
 
 ## Performance
 
